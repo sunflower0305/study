@@ -10,7 +10,7 @@ const groq = new Groq({ apiKey: process.env["GROQ_API_KEY"] });
 
 const copilotKit = new CopilotRuntime();
 
-const serviceAdapter = new GroqAdapter({ groq, model: "llama3-groq-8b-8192-tool-use-preview" });
+const serviceAdapter = new GroqAdapter({ groq, model: "gemma2-9b-it" });
 
 export const POST = async (req: NextRequest) => {
     const { handleRequest } = copilotRuntimeNextJSAppRouterEndpoint({
