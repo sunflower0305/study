@@ -1,7 +1,7 @@
-"use client";
-import React, { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { Plus } from "lucide-react";
+"use client"
+import React, { useState } from "react"
+import { AnimatePresence, motion } from "framer-motion"
+import { Plus } from "lucide-react"
 
 const tabs = [
   {
@@ -24,37 +24,33 @@ const tabs = [
     description:
       "Yes, Study Sphere is completely free to use. Our goal is to provide valuable educational tools to students without any cost. You can access all features of the app without any subscriptions or hidden fees.",
   },
-];
+]
 
 function FAQ() {
-  const [activeIndex, setActiveIndex] = useState<number | null>(0);
+  const [activeIndex, setActiveIndex] = useState<number | null>(0)
   const [activeItem, setActiveItem] = useState<
     | {
-        title: string;
-        description: string;
+        title: string
+        description: string
       }
     | undefined
-  >(tabs[0]);
+  >(tabs[0])
 
   const handleClick = async (index: number) => {
-    setActiveIndex(activeIndex === index ? null : index);
-    const newActiveItem = tabs.find((_, i) => i === index);
-    setActiveItem(newActiveItem);
-  };
+    setActiveIndex(activeIndex === index ? null : index)
+    const newActiveItem = tabs.find((_, i) => i === index)
+    setActiveItem(newActiveItem)
+  }
 
   return (
     <>
       <div className="container mx-auto pb-10 pt-2">
-        <h1 className="uppercase text-center text-4xl font-bold pt-2 pb-4">
-          FAQ
-        </h1>
+        <h1 className="uppercase text-center text-4xl font-bold pt-2 pb-4">FAQ</h1>
         <div className="h-fit border  rounded-lg p-2 dark:bg-[#111111] bg-[#F2F2F2]">
           {tabs.map((tab, index) => (
             <motion.div
               key={index}
-              className={`overflow-hidden ${
-                index !== tabs.length - 1 ? "border-b" : ""
-              }`}
+              className={`overflow-hidden ${index !== tabs.length - 1 ? "border-b" : ""}`}
               onClick={() => handleClick(index)}
             >
               <button
@@ -80,9 +76,7 @@ function FAQ() {
                       delay: 0.14,
                     }}
                   >
-                    <p
-                      className={`dark:text-white text-black p-3 pt-0 w-[90%]`}
-                    >
+                    <p className={`dark:text-white text-black p-3 pt-0 w-[90%]`}>
                       {tab.description}
                     </p>
                   </motion.div>
@@ -93,7 +87,7 @@ function FAQ() {
         </div>
       </div>
     </>
-  );
+  )
 }
 
-export default FAQ;
+export default FAQ

@@ -1,27 +1,27 @@
-"use client";
+"use client"
 
-import { animate, stagger, useAnimate } from "framer-motion";
-import { Star } from "lucide-react";
-import { useEffect, useState } from "react";
+import { animate, stagger, useAnimate } from "framer-motion"
+import { Star } from "lucide-react"
+import { useEffect, useState } from "react"
 
-type AnimationSequence = Parameters<typeof animate>[0];
+type AnimationSequence = Parameters<typeof animate>[0]
 
 const Sparkles = ({ text = "Nothing" }: { text: string }) => {
-  const [starCount, setStarCount] = useState(0);
+  const [starCount, setStarCount] = useState(0)
   useEffect(() => {
     setTimeout(() => {
-      setStarCount(randomNumberGenerator(2, 50));
-    }, 1000);
-  }, [starCount]);
+      setStarCount(randomNumberGenerator(2, 50))
+    }, 1000)
+  }, [starCount])
 
   const randomNumberGenerator = (min: number, max: number) => {
-    return Math.random() * (max - min) + min;
-  };
-  const [scope, animate] = useAnimate();
-  const letters = text.split("");
+    return Math.random() * (max - min) + min
+  }
+  const [scope, animate] = useAnimate()
+  const letters = text.split("")
 
   const handleBtnClick = () => {
-    const sparkles = Array.from({ length: starCount });
+    const sparkles = Array.from({ length: starCount })
 
     const sparkleAnimation: AnimationSequence = sparkles.map((_, index) => [
       `.stars-${index}`,
@@ -35,7 +35,7 @@ const Sparkles = ({ text = "Nothing" }: { text: string }) => {
         duration: 0.4,
         at: "<",
       },
-    ]);
+    ])
     const sparkesFadeOut: AnimationSequence = sparkles.map((_, index) => [
       `.stars-${index}`,
       {
@@ -46,7 +46,7 @@ const Sparkles = ({ text = "Nothing" }: { text: string }) => {
         duration: 0.3,
         at: "<",
       },
-    ]);
+    ])
     const sparcleReset: AnimationSequence = sparkles.map((_, index) => [
       `.stars-${index}`,
       {
@@ -57,7 +57,7 @@ const Sparkles = ({ text = "Nothing" }: { text: string }) => {
         duration: 0.00000000001,
         at: "<",
       },
-    ]);
+    ])
 
     animate([
       ...sparcleReset,
@@ -67,8 +67,8 @@ const Sparkles = ({ text = "Nothing" }: { text: string }) => {
       ...sparkleAnimation,
       [".letter", { y: 0 }, { duration: 0.00000000001 }],
       ...sparkesFadeOut,
-    ]);
-  };
+    ])
+  }
   return (
     <div className="h-full center">
       <div ref={scope}>
@@ -77,10 +77,7 @@ const Sparkles = ({ text = "Nothing" }: { text: string }) => {
           className="border-2 text-2xl px-10 py-1.5 rounded-full transition-colors duration-150 border-border  relative"
         >
           <span className="sr-only">{text}</span>
-          <span
-            className="flex items-center justify-center overflow-hidden h-8"
-            aria-hidden
-          >
+          <span className="flex items-center justify-center overflow-hidden h-8" aria-hidden>
             {letters.map((letter, index) => (
               <span
                 data-letter={letter}
@@ -103,7 +100,7 @@ const Sparkles = ({ text = "Nothing" }: { text: string }) => {
         </button>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Sparkles;
+export default Sparkles

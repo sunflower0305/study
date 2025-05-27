@@ -1,10 +1,10 @@
-"use client";
+"use client"
 
-import { NotesProvider, useNotesContext } from "@/lib/notes/notes-provider";
-import { Note } from "@/lib/notes/types";
-import { useCopilotAction, useCopilotReadable } from "@copilotkit/react-core";
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { NotesProvider, useNotesContext } from "@/lib/notes/notes-provider"
+import { Note } from "@/lib/notes/types"
+import { useCopilotAction, useCopilotReadable } from "@copilotkit/react-core"
+import { useState } from "react"
+import { motion, AnimatePresence } from "framer-motion"
 import {
   Card,
   CardContent,
@@ -12,10 +12,10 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+} from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
 import {
   Dialog,
   DialogContent,
@@ -23,46 +23,46 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Edit, Eye, Save, Trash } from "lucide-react";
+} from "@/components/ui/dialog"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { Edit, Eye, Save, Trash } from "lucide-react"
 
 function NotesComponent() {
-  const { notes, createNote, updateNote, deleteNote } = useNotesContext();
+  const { notes, createNote, updateNote, deleteNote } = useNotesContext()
   const emptyNote: Note = {
     id: "",
     title: "",
     content: "",
-  };
-  const [newNote, setNewNote] = useState<Note>(emptyNote);
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
-  const [selectedNote, setSelectedNote] = useState<Note | null>(null);
-  const [isEditMode, setIsEditMode] = useState(false);
+  }
+  const [newNote, setNewNote] = useState<Note>(emptyNote)
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false)
+  const [selectedNote, setSelectedNote] = useState<Note | null>(null)
+  const [isEditMode, setIsEditMode] = useState(false)
 
   const handleCreateNote = () => {
     createNote({
       ...newNote,
       id: Math.random().toString(),
-    });
-    setIsCreateModalOpen(false);
-    setNewNote(emptyNote);
-  };
+    })
+    setIsCreateModalOpen(false)
+    setNewNote(emptyNote)
+  }
 
   const handleEditNote = (id: string, selectedNote: Note) => {
-    updateNote(id, selectedNote);
-    setIsViewModalOpen(false);
-  };
+    updateNote(id, selectedNote)
+    setIsViewModalOpen(false)
+  }
 
   const handleDeleteNote = (id: string) => {
-    deleteNote(id);
-    setIsViewModalOpen(false);
-  };
+    deleteNote(id)
+    setIsViewModalOpen(false)
+  }
 
   useCopilotReadable({
     description: "Notes list.",
     value: JSON.stringify(notes),
-  });
+  })
 
   useCopilotAction({
     name: "Create a Note",
@@ -81,16 +81,16 @@ function NotesComponent() {
         required: true,
       },
     ],
-    handler: (args) => {
+    handler: args => {
       const newNote: Note = {
         id: Math.random().toString(),
         title: args.title as string,
         content: args.content as string,
-      };
-      createNote(newNote);
-      console.log("Note created", newNote);
+      }
+      createNote(newNote)
+      console.log("Note created", newNote)
     },
-  });
+  })
 
   useCopilotAction({
     name: "Delete a Note",
@@ -103,10 +103,10 @@ function NotesComponent() {
         required: true,
       },
     ],
-    handler: (args) => {
-      deleteNote(args.id as string);
+    handler: args => {
+      deleteNote(args.id as string)
     },
-  });
+  })
 
   useCopilotAction({
     name: "Update a Note",
@@ -131,13 +131,13 @@ function NotesComponent() {
         required: true,
       },
     ],
-    handler: (args) => {
+    handler: args => {
       updateNote(args.id as string, {
         title: args.title as string,
         content: args.content as string,
-      });
+      })
     },
-  });
+  })
 
   return (
     <div className="min-h-screen p-12">
@@ -145,9 +145,7 @@ function NotesComponent() {
         <h1 className="text-4xl font-extrabold text-gray-900 space-x-2">
           📒 <span>Notes</span>
         </h1>
-        <p className="text-lg text-gray-700 mt-2">
-          📝 Manage your notes here. 📌
-        </p>
+        <p className="text-lg text-gray-700 mt-2">📝 Manage your notes here. 📌</p>
       </header>
 
       {notes.length === 0 ? (
@@ -159,16 +157,14 @@ function NotesComponent() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          {notes.map((note) => (
+          {notes.map(note => (
             <li
               key={note.id}
               className="p-4 bg-white border border-gray-200 rounded-lg shadow-sm w-full"
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="font-semibold text-lg text-gray-900">
-                    {note.title}
-                  </h3>
+                  <h3 className="font-semibold text-lg text-gray-900">{note.title}</h3>
                   <p className="text-gray-600 mt-1">
                     {note.content.slice(0, 50)}
                     {note.content.length > 50 ? "..." : ""}
@@ -178,8 +174,8 @@ function NotesComponent() {
                   <Button
                     size="icon"
                     onClick={() => {
-                      setSelectedNote(note);
-                      setIsViewModalOpen(true);
+                      setSelectedNote(note)
+                      setIsViewModalOpen(true)
                     }}
                     className="mr-4"
                   >
@@ -188,7 +184,7 @@ function NotesComponent() {
                   <Button
                     size="icon"
                     onClick={() => {
-                      handleDeleteNote(note.id);
+                      handleDeleteNote(note.id)
                     }}
                     variant="destructive"
                   >
@@ -201,11 +197,7 @@ function NotesComponent() {
         </motion.ul>
       )}
 
-      <Button
-        onClick={() => setIsCreateModalOpen(true)}
-        className="mt-6 mb-32"
-        size="lg"
-      >
+      <Button onClick={() => setIsCreateModalOpen(true)} className="mt-6 mb-32" size="lg">
         Create a Note
       </Button>
 
@@ -215,31 +207,22 @@ function NotesComponent() {
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>Create a New Note</DialogTitle>
-                <DialogDescription>
-                  Add a new note to your collection
-                </DialogDescription>
+                <DialogDescription>Add a new note to your collection</DialogDescription>
               </DialogHeader>
               <Input
                 placeholder="Title"
                 value={newNote.title}
-                onChange={(e) =>
-                  setNewNote({ ...newNote, title: e.target.value })
-                }
+                onChange={e => setNewNote({ ...newNote, title: e.target.value })}
                 className="mb-4"
               />
               <Textarea
                 placeholder="Content"
                 value={newNote.content}
-                onChange={(e) =>
-                  setNewNote({ ...newNote, content: e.target.value })
-                }
+                onChange={e => setNewNote({ ...newNote, content: e.target.value })}
                 className="mb-4"
               />
               <DialogFooter>
-                <Button
-                  variant="outline"
-                  onClick={() => setIsCreateModalOpen(false)}
-                >
+                <Button variant="outline" onClick={() => setIsCreateModalOpen(false)}>
                   Cancel
                 </Button>
                 <Button onClick={handleCreateNote}>Save</Button>
@@ -255,23 +238,15 @@ function NotesComponent() {
             <DialogContent className="max-w-4xl h-[70vh] flex flex-col">
               <DialogHeader className="flex flex-row items-center justify-between">
                 <DialogTitle>{selectedNote.title}</DialogTitle>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => setIsEditMode(!isEditMode)}
-                >
-                  {isEditMode ? (
-                    <Save className="h-4 w-4" />
-                  ) : (
-                    <Edit className="h-4 w-4" />
-                  )}
+                <Button variant="ghost" size="icon" onClick={() => setIsEditMode(!isEditMode)}>
+                  {isEditMode ? <Save className="h-4 w-4" /> : <Edit className="h-4 w-4" />}
                 </Button>
               </DialogHeader>
               <div className="flex-grow overflow-auto">
                 {isEditMode ? (
                   <Textarea
                     value={selectedNote.content}
-                    onChange={(e) =>
+                    onChange={e =>
                       setSelectedNote({
                         ...selectedNote,
                         content: e.target.value,
@@ -280,17 +255,15 @@ function NotesComponent() {
                     className="w-full h-full resize-none"
                   />
                 ) : (
-                  <div className="whitespace-pre-wrap">
-                    {selectedNote.content}
-                  </div>
+                  <div className="whitespace-pre-wrap">{selectedNote.content}</div>
                 )}
               </div>
               <DialogFooter>
                 <Button
                   variant="outline"
                   onClick={() => {
-                    setIsViewModalOpen(false);
-                    setIsEditMode(false);
+                    setIsViewModalOpen(false)
+                    setIsEditMode(false)
                   }}
                 >
                   Close
@@ -298,7 +271,7 @@ function NotesComponent() {
                 {isEditMode && (
                   <Button
                     onClick={() => {
-                      handleEditNote(selectedNote.id, selectedNote);
+                      handleEditNote(selectedNote.id, selectedNote)
                     }}
                   >
                     Save Changes
@@ -307,7 +280,7 @@ function NotesComponent() {
                 <Button
                   variant="destructive"
                   onClick={() => {
-                    handleDeleteNote(selectedNote.id);
+                    handleDeleteNote(selectedNote.id)
                   }}
                 >
                   Delete
@@ -318,7 +291,7 @@ function NotesComponent() {
         )}
       </AnimatePresence>
     </div>
-  );
+  )
 }
 
 export default function Page() {
@@ -326,5 +299,5 @@ export default function Page() {
     <NotesProvider>
       <NotesComponent />
     </NotesProvider>
-  );
+  )
 }
