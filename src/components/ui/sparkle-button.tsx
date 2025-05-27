@@ -1,6 +1,6 @@
 "use client"
 
-import { animate, stagger, useAnimate } from "framer-motion"
+import { animate, Segment, stagger, useAnimate } from "framer-motion"
 import { Star } from "lucide-react"
 import { useEffect, useState } from "react"
 
@@ -23,7 +23,7 @@ const Sparkles = ({ text = "Nothing" }: { text: string }) => {
   const handleBtnClick = () => {
     const sparkles = Array.from({ length: starCount })
 
-    const sparkleAnimation: AnimationSequence = sparkles.map((_, index) => [
+    const sparkleAnimation: Segment[] = sparkles.map((_, index) => [
       `.stars-${index}`,
       {
         x: randomNumberGenerator(-100, 100),
@@ -36,7 +36,7 @@ const Sparkles = ({ text = "Nothing" }: { text: string }) => {
         at: "<",
       },
     ])
-    const sparkesFadeOut: AnimationSequence = sparkles.map((_, index) => [
+    const sparkesFadeOut: Segment[] = sparkles.map((_, index) => [
       `.stars-${index}`,
       {
         opacity: 0,
@@ -47,7 +47,7 @@ const Sparkles = ({ text = "Nothing" }: { text: string }) => {
         at: "<",
       },
     ])
-    const sparcleReset: AnimationSequence = sparkles.map((_, index) => [
+    const sparcleReset: Segment[] = sparkles.map((_, index) => [
       `.stars-${index}`,
       {
         x: 0,
