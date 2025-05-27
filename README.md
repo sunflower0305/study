@@ -1,4 +1,4 @@
-![study-sphere](https://socialify.git.ci/kom-senapati/study-sphere/image?font=Rokkitt&language=1&name=1&owner=1&pattern=Charlie%20Brown&theme=Light)
+![study-sphere](https://socialify.git.ci/k0msenapati/study-sphere/image?font=Rokkitt&language=1&name=1&owner=1&pattern=Charlie%20Brown&theme=Light)
 
 <p align="center">
   <img src="https://img.shields.io/badge/npm-v.0.21.0-red"  />
@@ -32,7 +32,7 @@ To get Study Sphere up and running, follow these steps:
 
 1. Clone the repository:
    ```sh
-   git clone https://github.com/kom-senapati/study-sphere.git
+   git clone https://github.com/k0msenapati/study-sphere.git
    ```
 
 2. Install NPM packages:
@@ -41,7 +41,7 @@ To get Study Sphere up and running, follow these steps:
    ```
 
 3. Add your environment variables in `.env.local`:
-   ```js
+   ```sh
    GROQ_API_KEY='YOUR API KEY HERE'
    ```
 
@@ -51,5 +51,5 @@ To get Study Sphere up and running, follow these steps:
    ```
 
 ### :email: Contact
-- GitHub: [kom-senapati](https://github.com/kom-senapati)
-- Twitter: [@kom_senapati](https://x.com/kom_senapati)
+- GitHub: [k0msenapati](https://github.com/k0msenapati)
+- Twitter: [@k0msenapati](https://x.com/k0msenapati)
