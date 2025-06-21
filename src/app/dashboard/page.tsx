@@ -32,7 +32,7 @@ const Dashboard = () => {
       <div className="flex flex-col md:flex-row flex-wrap gap-6 justify-between py-6">
         <Link href="/dashboard/notes" className="w-full md:w-[48%] lg:w-[32%]">
           <motion.div
-            className="relative bg-white cursor-pointer p-6 rounded-lg shadow-md flex items-start transition-transform duration-300 ease-in-out h-full"
+            className="relative bg-card dark:bg-card/50 cursor-pointer p-6 rounded-lg shadow-md flex items-start transition-transform duration-300 ease-in-out h-full"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -40,8 +40,8 @@ const Dashboard = () => {
             <div className="relative z-10 flex items-start gap-4">
               <FaBookOpen className="text-blue-500 text-5xl" />
               <div>
-                <h2 className="text-xl md:text-2xl font-semibold">Review Your Notes</h2>
-                <p className="mt-2 text-sm md:text-base">
+                <h2 className="text-xl md:text-2xl font-semibold text-foreground">Review Your Notes</h2>
+                <p className="mt-2 text-sm md:text-base text-muted-foreground">
                   Make sure to revisit your study notes to reinforce your knowledge.
                 </p>
               </div>
@@ -50,7 +50,7 @@ const Dashboard = () => {
         </Link>
         <Link href="/dashboard/quizzes" className="w-full md:w-[48%] lg:w-[32%]">
           <motion.div
-            className="relative bg-white cursor-pointer p-6 rounded-lg shadow-md flex items-start transition-transform duration-300 ease-in-out h-full"
+            className="relative bg-card dark:bg-card/50 cursor-pointer p-6 rounded-lg shadow-md flex items-start transition-transform duration-300 ease-in-out h-full"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -58,8 +58,8 @@ const Dashboard = () => {
             <div className="relative z-10 flex items-start gap-4">
               <MdQuiz className="text-green-500 text-5xl" />
               <div>
-                <h2 className="text-xl md:text-2xl font-semibold">Take a Quiz</h2>
-                <p className="mt-2 text-sm md:text-base">
+                <h2 className="text-xl md:text-2xl font-semibold text-foreground">Take a Quiz</h2>
+                <p className="mt-2 text-sm md:text-base text-muted-foreground">
                   Challenge yourself with a quiz to test your understanding.
                 </p>
               </div>
@@ -68,7 +68,7 @@ const Dashboard = () => {
         </Link>
         <Link href="/dashboard/chat" className="w-full md:w-[48%] lg:w-[32%]">
           <motion.div
-            className="relative bg-white cursor-pointer p-6 rounded-lg shadow-md flex items-start transition-transform duration-300 ease-in-out h-full"
+            className="relative bg-card dark:bg-card/50 cursor-pointer p-6 rounded-lg shadow-md flex items-start transition-transform duration-300 ease-in-out h-full"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -76,8 +76,8 @@ const Dashboard = () => {
             <div className="relative z-10 flex items-start gap-4">
               <FaComments className="text-red-500 text-5xl" />
               <div>
-                <h2 className="text-xl md:text-2xl font-semibold">Chat with a Study Buddy</h2>
-                <p className="mt-2 text-sm md:text-base">
+                <h2 className="text-xl md:text-2xl font-semibold text-foreground">Chat with a Study Buddy</h2>
+                <p className="mt-2 text-sm md:text-base text-muted-foreground">
                   Discuss any doubts or concepts with your study partner.
                 </p>
               </div>
