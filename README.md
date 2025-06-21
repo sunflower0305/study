@@ -41,8 +41,6 @@ Transform your study material into interactive flashcards with the power of AI! 
 
 **Perfect for**: Memorization, active recall, spaced repetition, and exam preparation.
 
-👉 [Read the complete Flashcards Feature Guide](FLASHCARDS.md)
-
 <details>
 <summary>📦 <strong>Set Up</strong></summary>
 
@@ -74,6 +72,23 @@ To get **Study Sphere** up and running locally, follow these steps:
    ```
 
 </details>
+
+## 🤝 How to Contribute
+
+We welcome contributions from everyone! To get started:
+
+1. **Fork** this repository.
+2. **Clone** your fork to your local machine.
+3. **Create a new branch** for your feature or bugfix.
+4. **Make your changes** and commit them with clear messages.
+5. **Push** your branch to your forked repository.
+6. **Open a Pull Request** describing your changes.
+
+For detailed guidelines, please see our [CONTRIBUTING.md](CONTRIBUTING.md).
+
+Thank you for helping improve Study Sphere!
+
+---
 
 <div align="center">
   <h1>Tip from us 😇</h1>
