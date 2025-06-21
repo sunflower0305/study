@@ -8,6 +8,7 @@ import { FiRefreshCw } from "react-icons/fi"
 import { IoFolderOpen, IoCalendarNumberSharp } from "react-icons/io5";
 import { RiFileList3Line } from "react-icons/ri"
 import { FaBookOpen, FaComments, FaLightbulb, FaBalanceScaleLeft } from "react-icons/fa"
+import { HiOutlineSparkles } from "react-icons/hi2"
 
 const Dashboard = () => {
   return (
@@ -32,7 +33,7 @@ const Dashboard = () => {
       <div className="flex flex-col md:flex-row flex-wrap gap-6 justify-between py-6">
         <Link href="/dashboard/notes" className="w-full md:w-[48%] lg:w-[32%]">
           <motion.div
-            className="relative bg-card dark:bg-card/50 cursor-pointer p-6 rounded-lg shadow-md flex items-start transition-transform duration-300 ease-in-out h-full"
+            className="relative bg-white cursor-pointer p-6 rounded-lg shadow-md flex items-start transition-transform duration-300 ease-in-out h-full"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -40,8 +41,8 @@ const Dashboard = () => {
             <div className="relative z-10 flex items-start gap-4">
               <FaBookOpen className="text-blue-500 text-5xl" />
               <div>
-                <h2 className="text-xl md:text-2xl font-semibold text-foreground">Review Your Notes</h2>
-                <p className="mt-2 text-sm md:text-base text-muted-foreground">
+                <h2 className="text-xl md:text-2xl font-semibold">Review Your Notes</h2>
+                <p className="mt-2 text-sm md:text-base">
                   Make sure to revisit your study notes to reinforce your knowledge.
                 </p>
               </div>
@@ -50,7 +51,7 @@ const Dashboard = () => {
         </Link>
         <Link href="/dashboard/quizzes" className="w-full md:w-[48%] lg:w-[32%]">
           <motion.div
-            className="relative bg-card dark:bg-card/50 cursor-pointer p-6 rounded-lg shadow-md flex items-start transition-transform duration-300 ease-in-out h-full"
+            className="relative bg-white cursor-pointer p-6 rounded-lg shadow-md flex items-start transition-transform duration-300 ease-in-out h-full"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -58,17 +59,16 @@ const Dashboard = () => {
             <div className="relative z-10 flex items-start gap-4">
               <MdQuiz className="text-green-500 text-5xl" />
               <div>
-                <h2 className="text-xl md:text-2xl font-semibold text-foreground">Take a Quiz</h2>
-                <p className="mt-2 text-sm md:text-base text-muted-foreground">
+                <h2 className="text-xl md:text-2xl font-semibold">Take a Quiz</h2>
+                <p className="mt-2 text-sm md:text-base">
                   Challenge yourself with a quiz to test your understanding.
                 </p>
               </div>
             </div>
           </motion.div>
-        </Link>
-        <Link href="/dashboard/chat" className="w-full md:w-[48%] lg:w-[32%]">
+        </Link>        <Link href="/dashboard/chat" className="w-full md:w-[48%] lg:w-[32%]">
           <motion.div
-            className="relative bg-card dark:bg-card/50 cursor-pointer p-6 rounded-lg shadow-md flex items-start transition-transform duration-300 ease-in-out h-full"
+            className="relative bg-white cursor-pointer p-6 rounded-lg shadow-md flex items-start transition-transform duration-300 ease-in-out h-full"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -76,9 +76,28 @@ const Dashboard = () => {
             <div className="relative z-10 flex items-start gap-4">
               <FaComments className="text-red-500 text-5xl" />
               <div>
-                <h2 className="text-xl md:text-2xl font-semibold text-foreground">Chat with a Study Buddy</h2>
-                <p className="mt-2 text-sm md:text-base text-muted-foreground">
+                <h2 className="text-xl md:text-2xl font-semibold">Chat with a Study Buddy</h2>
+                <p className="mt-2 text-sm md:text-base">
                   Discuss any doubts or concepts with your study partner.
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        </Link>
+        
+        <Link href="/dashboard/flashcards" className="w-full md:w-[48%] lg:w-[32%]">
+          <motion.div
+            className="relative bg-white cursor-pointer p-6 rounded-lg shadow-md flex items-start transition-transform duration-300 ease-in-out h-full"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <div className="absolute inset-0 border-2 border-gradient-to-r from-purple-400 via-pink-400 to-rose-400 rounded-lg opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+            <div className="relative z-10 flex items-start gap-4">
+              <HiOutlineSparkles className="text-purple-500 text-5xl" />
+              <div>
+                <h2 className="text-xl md:text-2xl font-semibold">Generate Flashcards</h2>
+                <p className="mt-2 text-sm md:text-base">
+                  Create AI-powered flashcards from your study material for effective memorization.
                 </p>
               </div>
             </div>

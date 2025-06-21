@@ -332,14 +332,14 @@ function NotesComponent() {
     <div className="min-h-screen p-8">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold mb-4 text-foreground">📝 Notes</h1>
-          <p className="text-muted-foreground mb-6">Keep your thoughts organized ✨</p>
+          <h1 className="text-3xl font-bold mb-4">📝 Notes</h1>
+          <p className="text-gray-600 mb-6">Keep your thoughts organized ✨</p>
 
           {totalNotes > 0 && (
             <div className="mb-6 max-w-4xl mx-auto space-y-4">
               {/* Search Bar */}
               <div>
-                <label className="block text-sm font-medium mb-2 text-left text-foreground">🔍 Search notes</label>
+                <label className="block text-sm font-medium mb-2 text-left">🔍 Search notes</label>
                 <Input
                   placeholder="Search by title or content..."
                   value={searchQuery}
@@ -352,7 +352,7 @@ function NotesComponent() {
                 {/* Keyword Filter */}
                 {searchOptions.length > 0 && (
                   <div>
-                    <label className="block text-sm font-medium mb-2 text-left text-foreground">
+                    <label className="block text-sm font-medium mb-2 text-left">
                       🏷️ Filter by keywords
                     </label>
                     <MultiSelect
@@ -369,7 +369,7 @@ function NotesComponent() {
                 {/* Category Filter */}
                 {allCategories.length > 0 && (
                   <div>
-                    <label className="block text-sm font-medium mb-2 text-left text-foreground">
+                    <label className="block text-sm font-medium mb-2 text-left">
                       📂 Filter by category
                     </label>
                     <Select value={selectedCategory} onValueChange={setSelectedCategory}>
@@ -396,27 +396,35 @@ function NotesComponent() {
                   </div>
                 )}
               </div>
-              <div className="flex justify-center">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="ml-2 h-6 px-2 text-xs"
-                  onClick={() => {
-                    setSearchQuery("")
-                    setSelectedSearchTerms([])
-                    setSelectedCategory("all")
-                  }}
-                >
-                  Clear all filters
-                </Button>
-              </div>
+
+              {/* Results Summary */}
+              {(searchQuery || selectedSearchTerms.length > 0 || selectedCategory !== "all") && (
+                <div className="text-sm text-gray-500 text-left">
+                  Found {filteredNotes.length} note{filteredNotes.length !== 1 ? "s" : ""}
+                  {searchQuery && ` matching "${searchQuery}"`}
+                  {selectedSearchTerms.length > 0 && ` with keywords`}
+                  {selectedCategory !== "all" && ` in "${selectedCategory}" category`}
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="ml-2 h-6 px-2 text-xs"
+                    onClick={() => {
+                      setSearchQuery("")
+                      setSelectedSearchTerms([])
+                      setSelectedCategory("all")
+                    }}
+                  >
+                    Clear all filters
+                  </Button>
+                </div>
+              )}
             </div>
           )}
         </div>
 
         {totalNotes === 0 && (
           <div className="text-center py-20">
-            <p className="text-muted-foreground mb-6">
+            <p className="text-gray-500 mb-6">
               📄 You don't have any notes yet. Let's create your first one!
             </p>
             <Button
@@ -430,7 +438,7 @@ function NotesComponent() {
 
         {filteredNotes.length === 0 && totalNotes > 0 && (
           <div className="text-center py-20">
-            <p className="text-muted-foreground mb-6">🔍 No notes found matching your search criteria.</p>
+            <p className="text-gray-500 mb-6">🔍 No notes found matching your search criteria.</p>
             <Button
               onClick={() => {
                 setSearchQuery("")
@@ -548,7 +556,6 @@ function NotesComponent() {
                   placeholder="Enter note title..."
                   value={newNote.title}
                   onChange={e => setNewNote({ ...newNote, title: e.target.value })}
-                  className="bg-background text-foreground"
                 />
                 <CategoryInput
                   categories={newNote.categories || []}
@@ -560,7 +567,7 @@ function NotesComponent() {
                   onChange={value => setNewNote({ ...newNote, content: value })}
                   modules={quillModules}
                   formats={quillFormats}
-                  className="min-h-[150px] text-foreground"
+                  className="min-h-[150px]"
                 />
               </div>
             </div>
@@ -584,9 +591,9 @@ function NotesComponent() {
         {/* View/Edit Note Modal */}
         {isViewModalOpen && selectedNote && (
           <Dialog open={isViewModalOpen} onOpenChange={setIsViewModalOpen}>
-            <DialogContent className="w-full sm:max-w-4xl max-h-[90vh] flex flex-col p-4 rounded-lg bg-background">
+            <DialogContent className="w-full sm:max-w-4xl max-h-[90vh] flex flex-col p-4 rounded-lg">
               <DialogHeader className="flex-row justify-between items-center">
-                <DialogTitle className="text-xl font-bold truncate text-foreground">
+                <DialogTitle className="text-xl font-bold truncate">
                   {isEditMode ? (
                     <Input
                       value={selectedNote.title}
@@ -596,7 +603,7 @@ function NotesComponent() {
                           title: e.target.value,
                         })
                       }
-                      className="text-xl font-bold bg-background text-foreground"
+                      className="text-xl font-bold"
                     />
                   ) : (
                     selectedNote.title
@@ -632,7 +639,7 @@ function NotesComponent() {
                 </div>
               )}
 
-              <div className="flex-1 overflow-y-auto border rounded-md px-2 py-2 border-border">
+              <div className="flex-1 overflow-y-auto border rounded-md px-2 py-2">
                 {isEditMode ? (
                   <ReactQuill
                     theme="snow"
@@ -645,11 +652,11 @@ function NotesComponent() {
                     }
                     modules={quillModules}
                     formats={quillFormats}
-                    className="min-h-[200px] text-foreground"
+                    className="min-h-[200px]"
                   />
                 ) : (
                   <div
-                    className="prose dark:prose-invert max-w-none"
+                    className="prose max-w-none"
                     dangerouslySetInnerHTML={{ __html: selectedNote.content as string }}
                   />
                 )}
