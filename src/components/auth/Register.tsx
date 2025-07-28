@@ -1,9 +1,25 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+
+const checkPasswordStrength = useCallback((password: string) => {
+  const hasUpperCase = /[A-Z]/.test(password);
+  const hasLowerCase = /[a-z]/.test(password);
+  const hasNumbers = /[0-9]/.test(password);
+  const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+  const lengthCheck = password.length >= 8;
+
+  if (lengthCheck && hasUpperCase && hasLowerCase && hasNumbers && hasSpecial) {
+    return 'Strong';
+  } else if (lengthCheck && ((hasUpperCase && hasLowerCase) || hasNumbers)) {
+    return 'Moderate';
+  } else {
+    return 'Weak';
+  }
+}, []);
 
 export default function Register() {
   const [email, setEmail] = useState('');
@@ -11,7 +27,19 @@ export default function Register() {
   const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [passwordStrength, setPasswordStrength] = useState('');
   const router = useRouter();
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (password) {
+        const strength = checkPasswordStrength(password);
+        setPasswordStrength(strength);
+      }
+    }, 300); // 300ms debounce 
+
+    return () => clearTimeout(timeout);
+  }, [password, checkPasswordStrength]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -113,6 +141,19 @@ export default function Register() {
           minLength={6}
           className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
         />
+        {password && (
+          <p
+            className={`text-sm mt-1 ${
+              passwordStrength === 'Strong'
+                ? 'text-green-600'
+                : passwordStrength === 'Moderate'
+                ? 'text-yellow-600'
+                : 'text-red-600'
+            }`}
+          >
+            Strength: {passwordStrength}
+          </p>
+        )}
       </div>
 
       <button
