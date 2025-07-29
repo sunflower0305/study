@@ -4,8 +4,12 @@ import { useState, useCallback, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import { Eye, EyeOff } from 'lucide-react';
 
-const checkPasswordStrength = useCallback((password: string) => {
+
+
+export default function Register() {
+  const checkPasswordStrength = useCallback((password: string) => {
   const hasUpperCase = /[A-Z]/.test(password);
   const hasLowerCase = /[a-z]/.test(password);
   const hasNumbers = /[0-9]/.test(password);
@@ -19,11 +23,10 @@ const checkPasswordStrength = useCallback((password: string) => {
   } else {
     return 'Weak';
   }
-}, []);
-
-export default function Register() {
+},[]);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -36,10 +39,10 @@ export default function Register() {
         const strength = checkPasswordStrength(password);
         setPasswordStrength(strength);
       }
-    }, 300); // 300ms debounce 
+    }, 300); // 300ms debounce
 
     return () => clearTimeout(timeout);
-  }, [password, checkPasswordStrength]);
+  }, [password]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -76,6 +79,7 @@ export default function Register() {
       transition={{ duration: 0.5 }}
       className="bg-white p-8 shadow-xl rounded-2xl space-y-6"
     >
+      {/* Header */}
       <div className="text-center space-y-4">
         <div className="flex justify-center">
           <Image
@@ -90,6 +94,7 @@ export default function Register() {
         <p className="text-gray-600">Join Study Sphere today</p>
       </div>
 
+      {/* Error Message */}
       {error && (
         <motion.div
           initial={{ opacity: 0 }}
@@ -100,6 +105,7 @@ export default function Register() {
         </motion.div>
       )}
 
+      {/* Name Input */}
       <div>
         <label htmlFor="name" className="block text-sm font-medium text-gray-700">
           Name
@@ -114,6 +120,7 @@ export default function Register() {
         />
       </div>
 
+      {/* Email Input */}
       <div>
         <label htmlFor="email" className="block text-sm font-medium text-gray-700">
           Email
@@ -128,19 +135,29 @@ export default function Register() {
         />
       </div>
 
-      <div>
+      {/* Password Input with Toggle & Strength */}
+      <div className="relative">
         <label htmlFor="password" className="block text-sm font-medium text-gray-700">
           Password
         </label>
         <input
-          type="password"
+          type={showPassword ? 'text' : 'password'}
           id="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
           minLength={6}
-          className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+          className="mt-1 block w-full px-4 py-2 pr-10 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
         />
+        <button
+          type="button"
+          onClick={() => setShowPassword(!showPassword)}
+          aria-label="Toggle password visibility"
+          className="absolute right-3 top-9 text-gray-500 hover:text-gray-700 focus:outline-none"
+        >
+          {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+        </button>
+
         {password && (
           <p
             className={`text-sm mt-1 ${
@@ -156,6 +173,7 @@ export default function Register() {
         )}
       </div>
 
+      {/* Submit Button */}
       <button
         type="submit"
         disabled={loading}
