@@ -48,8 +48,8 @@ export const tasks = sqliteTable('tasks', {
   userId: integer('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
   title: text('title').notNull(),
   description: text('description'),
-  priority: text('priority', { enum: ['low', 'medium', 'high'] }).notNull().default('medium'),
-  status: text('status', { enum: ['pending', 'in_progress', 'completed'] }).notNull().default('pending'),
+  priority: text('priority').notNull().default('medium'), // 'low', 'medium', 'high'
+  status: text('status').notNull().default('pending'), // 'pending', 'in-progress', 'completed'
   dueDate: integer('due_date', { mode: 'timestamp' }),
   scheduledDate: integer('scheduled_date', { mode: 'timestamp' }),
   scheduledStartTime: text('scheduled_start_time'), // HH:MM format
@@ -67,8 +67,8 @@ export const dailyReviews = sqliteTable('daily_reviews', {
   reviewDate: integer('review_date', { mode: 'timestamp' }).notNull(),
   completedTasks: integer('completed_tasks').notNull().default(0),
   totalTasks: integer('total_tasks').notNull().default(0),
-  reflection: text('reflection'), // What went well?
-  improvements: text('improvements'), // What needs adjustment?
+  reflection: text('reflection'),
+  improvements: text('improvements'),
   productivityScore: integer('productivity_score'), // 1-10 scale
   createdAt: integer('created_at', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
 });
@@ -87,6 +87,10 @@ export const userSettings = sqliteTable('user_settings', {
   pomodoroWorkDuration: integer('pomodoro_work_duration').notNull().default(25), // minutes
   pomodoroBreakDuration: integer('pomodoro_break_duration').notNull().default(5), // minutes
   themePreference: text('theme_preference').notNull().default('system'), // 'light' | 'dark' | 'system'
+  studyAreaBackgroundImage: text('study_area_background_image'), // URL or path to background image
+  ambientSoundEnabled: integer('ambient_sound_enabled', { mode: 'boolean' }).notNull().default(false),
+  selectedAmbientSound: text('selected_ambient_sound').notNull().default('none'), // 'none', 'rain', 'forest', 'cafe', 'white-noise'
+  ambientSoundVolume: integer('ambient_sound_volume').notNull().default(50), // 0-100
   createdAt: integer('created_at', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
   updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
 });
@@ -99,15 +103,15 @@ export const decks = sqliteTable('decks', {
   description: text('description'),
   color: text('color').notNull().default('#3B82F6'),
   isPublic: integer('is_public', { mode: 'boolean' }).notNull().default(false),
-  tags: text('tags').notNull().default('[]'), // JSON array of strings
-  studyMaterial: text('study_material'), // Original material used to generate cards
+  tags: text('tags', { mode: 'json' }).notNull().default('[]'), // JSON array of strings
+  studyMaterial: text('study_material'), // Original text used to generate flashcards
   totalCards: integer('total_cards').notNull().default(0),
   lastStudied: integer('last_studied', { mode: 'timestamp' }),
   createdAt: integer('created_at', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
   updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
 });
 
-// --- Flashcards Table ---
+// --- Individual Flashcards Table ---
 export const flashcards = sqliteTable('flashcards', {
   id: text('id').primaryKey(), // UUID
   deckId: text('deck_id').notNull().references(() => decks.id, { onDelete: 'cascade' }),
@@ -218,7 +222,7 @@ export const quizzes = sqliteTable('quizzes', {
   title: text('title').notNull(),
   description: text('description').notNull(),
   difficulty: text('difficulty').notNull().default('intermediate'), // beginner, intermediate, advanced
-  questions: text('questions').notNull(), // JSON array of questions
+  questions: text('questions', { mode: 'json' }).notNull(), // JSON array of questions
   timeLimit: integer('time_limit').notNull().default(300), // in seconds
   createdAt: integer('created_at', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
   updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
@@ -241,7 +245,26 @@ export const quizCompletions = sqliteTable('quiz_completions', {
   totalQuestions: integer('total_questions').notNull(),
   timeSpent: integer('time_spent').notNull(), // in seconds
   completedAt: integer('completed_at', { mode: 'timestamp' }).notNull(),
-  answers: text('answers').notNull(), // JSON array of user answers
+  answers: text('answers', { mode: 'json' }).notNull(), // JSON array of user answers
+});
+
+// --- Focus Sessions Table ---
+export const focusSessions = sqliteTable('focus_sessions', {
+  id: text('id').primaryKey(), // UUID
+  userId: integer('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  startTime: integer('start_time', { mode: 'timestamp' }).notNull(),
+  endTime: integer('end_time', { mode: 'timestamp' }),
+  plannedDuration: integer('planned_duration').notNull(), // in minutes
+  actualDuration: integer('actual_duration'), // in minutes
+  sessionType: text('session_type').notNull().default('focus'), // 'focus', 'break', 'pomodoro'
+  isCompleted: integer('is_completed', { mode: 'boolean' }).notNull().default(false),
+  notes: text('notes'),
+  interruptions: integer('interruptions').notNull().default(0),
+  goalText: text('goal_text'),
+  tags: text('tags', { mode: 'json' }).default('[]'), // JSON array of strings
+  mood: text('mood'), // 'excellent', 'good', 'average', 'poor'
+  productivity: integer('productivity'), // 1-10 scale
+  createdAt: integer('created_at', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
 });
 
 // --- Zod Schemas for Quiz Tables ---
@@ -307,5 +330,6 @@ export type NewFlashcard = typeof flashcards.$inferInsert;
 export type StudySession = typeof studySessions.$inferSelect;
 export type NewStudySession = typeof studySessions.$inferInsert;
 
-export type FlashcardResult = typeof flashcardResults.$inferSelect;
-export type NewFlashcardResult = typeof flashcardResults.$inferInsert;
+// Export schema for focus sessions
+export const insertFocusSessionSchema = createInsertSchema(focusSessions);
+export const selectFocusSessionSchema = createSelectSchema(focusSessions);
