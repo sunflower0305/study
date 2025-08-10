@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { format } from 'date-fns'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -14,30 +14,34 @@ interface SmartSuggestionsProps {
   userSettings?: UserSettings
 }
 
+// Use a module-level constant so the object identity is stable across renders
+const DEFAULT_SETTINGS: UserSettings = {
+  id: 'default',
+  userId: 0,
+  focusSessionDuration: 90,
+  breakDuration: 20,
+  workStartTime: '09:00',
+  workEndTime: '17:00',
+  peakHoursStart: '10:00',
+  peakHoursEnd: '12:00',
+  pomodoroEnabled: false,
+  pomodoroWorkDuration: 25,
+  pomodoroBreakDuration: 5,
+  // Use epoch dates to avoid recreating Date instances each render
+  createdAt: new Date(0),
+  updatedAt: new Date(0),
+}
+
 export function SmartSuggestions({ userSettings }: SmartSuggestionsProps) {
   const { tasks, getPendingTasks, updateTask } = useTasksContext()
   const [suggestions, setSuggestions] = useState<ScheduleSuggestion[]>([])
   const [loading, setLoading] = useState(false)
 
-  const defaultSettings: UserSettings = {
-    id: 'default',
-    userId: 0,
-    focusSessionDuration: 90,
-    breakDuration: 20,
-    workStartTime: '09:00',
-    workEndTime: '17:00',
-    peakHoursStart: '10:00',
-    peakHoursEnd: '12:00',
-    pomodoroEnabled: false,
-    pomodoroWorkDuration: 25,
-    pomodoroBreakDuration: 5,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  }
-
-  const settings = userSettings || defaultSettings
+  // Memoize the effective settings to prevent effect loops
+  const settings = useMemo(() => userSettings ?? DEFAULT_SETTINGS, [userSettings])
 
   useEffect(() => {
+    let cancelled = false
     const generateSuggestions = async () => {
       setLoading(true)
       try {
@@ -54,15 +58,18 @@ export function SmartSuggestions({ userSettings }: SmartSuggestionsProps) {
           allSuggestions.push(...taskSuggestions.slice(0, 2)) // Top 2 suggestions per task
         }
 
-        setSuggestions(allSuggestions.slice(0, 6)) // Show top 6 suggestions
+        if (!cancelled) setSuggestions(allSuggestions.slice(0, 6)) // Show top 6 suggestions
       } catch (error) {
         console.error('Error generating suggestions:', error)
       } finally {
-        setLoading(false)
+        if (!cancelled) setLoading(false)
       }
     }
 
     generateSuggestions()
+    return () => {
+      cancelled = true
+    }
   }, [tasks, getPendingTasks, settings])
 
   const handleAcceptSuggestion = async (suggestion: ScheduleSuggestion) => {
