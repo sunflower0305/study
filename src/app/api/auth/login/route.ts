@@ -5,24 +5,15 @@ import { users } from '@/lib/db/schema';
 import { verifyPassword } from '@/lib/auth/password';
 import { setSession } from '@/lib/auth/jwt';
 import { eq } from 'drizzle-orm';
-import { verifyRecaptcha } from '@/lib/auth/recaptcha';
 
 export async function POST(request: NextRequest) {
   try {
-    const { email, password, recaptchaToken } = await request.json();
+    const { email, password } = await request.json();
 
-    if (!email || !password || !recaptchaToken) {
+    if (!email || !password) {
       return NextResponse.json(
-        { error: 'Email, password, and reCAPTCHA are required' },
+        { error: 'Email and password are required' },
         { status: 400 }
-      );
-    }
-
-    const recaptchaRes = await verifyRecaptcha(recaptchaToken);
-    if (!recaptchaRes.success) {
-      return NextResponse.json(
-        { error: 'reCAPTCHA verification failed' },
-        { status: 403 }
       );
     }
 

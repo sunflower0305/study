@@ -1,10 +1,9 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { Eye, EyeOff } from 'lucide-react';
-import ReCAPTCHA from 'react-google-recaptcha';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -12,33 +11,17 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [recaptchaToken, setRecaptchaToken] = useState('');
-
-  const recaptchaRef = useRef<ReCAPTCHA>(null);
-  const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ?? '';
-
-  useEffect(() => {
-    if (!siteKey) {
-      console.error('⚠️ Missing NEXT_PUBLIC_RECAPTCHA_SITE_KEY. reCAPTCHA will not work.');
-    }
-  }, [siteKey]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError('');
 
-    if (!recaptchaToken) {
-      setError('Please complete the reCAPTCHA.');
-      setLoading(false);
-      return;
-    }
-
     try {
       const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password, recaptchaToken }),
+        body: JSON.stringify({ email, password }),
       });
 
       const data = await response.json();
@@ -46,11 +29,9 @@ export default function Login() {
         window.location.href = '/dashboard';
       } else {
         setError(data.error || 'Login failed');
-        recaptchaRef.current?.reset();
       }
     } catch (error) {
       setError('Network error');
-      recaptchaRef.current?.reset();
     } finally {
       setLoading(false);
     }
@@ -120,15 +101,6 @@ export default function Login() {
           {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
         </button>
       </div>
-
-      {/* reCAPTCHA */}
-      {siteKey && (
-        <ReCAPTCHA
-          ref={recaptchaRef}
-          sitekey={siteKey}
-          onChange={(token) => setRecaptchaToken(token || '')}
-        />
-      )}
 
       {/* Submit */}
       <button

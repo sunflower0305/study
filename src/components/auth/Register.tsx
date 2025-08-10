@@ -1,11 +1,10 @@
 'use client';
 
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { Eye, EyeOff } from 'lucide-react';
-import ReCAPTCHA from 'react-google-recaptcha';
 
 export default function Register() {
   const checkPasswordStrength = useCallback((password: string) => {
@@ -31,17 +30,7 @@ export default function Register() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [passwordStrength, setPasswordStrength] = useState('');
-  const [recaptchaToken, setRecaptchaToken] = useState('');
   const router = useRouter();
-
-  const recaptchaRef = useRef<ReCAPTCHA>(null);
-  const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ?? '';
-
-  useEffect(() => {
-    if (!siteKey) {
-      console.error('⚠️ Missing NEXT_PUBLIC_RECAPTCHA_SITE_KEY. reCAPTCHA will not work.');
-    }
-  }, [siteKey]);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -58,17 +47,11 @@ export default function Register() {
     setLoading(true);
     setError('');
 
-    if (!recaptchaToken) {
-      setError('Please complete the reCAPTCHA.');
-      setLoading(false);
-      return;
-    }
-
     try {
       const response = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password, name, recaptchaToken }),
+        body: JSON.stringify({ email, password, name }),
       });
 
       const data = await response.json();
@@ -77,11 +60,9 @@ export default function Register() {
         router.refresh();
       } else {
         setError(data.error || 'Registration failed');
-        recaptchaRef.current?.reset();
       }
     } catch (error) {
       setError('Network error');
-      recaptchaRef.current?.reset();
     } finally {
       setLoading(false);
     }
@@ -187,15 +168,6 @@ export default function Register() {
           </p>
         )}
       </div>
-
-      {/* reCAPTCHA */}
-      {siteKey && (
-        <ReCAPTCHA
-          ref={recaptchaRef}
-          sitekey={siteKey}
-          onChange={(token) => setRecaptchaToken(token || '')}
-        />
-      )}
 
       {/* Submit */}
       <button
