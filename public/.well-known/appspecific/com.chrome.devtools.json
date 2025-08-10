@@ -1,0 +1,7 @@
+{
+  "version": 1,
+  "devtoolsFrontendUrl": "/devtools/inspector.html?experiments=true",
+  "frontendUrl": "/devtools/inspector.html",
+  "thumbnailUrl": "/devtools/thumbnail.png"
+}
+

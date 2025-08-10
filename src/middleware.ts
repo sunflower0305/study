@@ -1,22 +1,19 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getSession } from './lib/auth/jwt';
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 
-export async function middleware(request: NextRequest) {
-  const session = await getSession();
-  const isAuthPage = request.nextUrl.pathname.startsWith('/auth');
-  const isDashboard = request.nextUrl.pathname.startsWith('/dashboard');
+export function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
 
-  if (isDashboard && !session) {
-    return NextResponse.redirect(new URL('/auth/login', request.url));
-  }
-
-  if (isAuthPage && session) {
-    return NextResponse.redirect(new URL('/dashboard', request.url));
+  // Silence missing CSS source map requests from logs with 204
+  if (pathname.startsWith('/_next/static/css/') && pathname.endsWith('.css.map')) {
+    return new NextResponse(null, { status: 204 });
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/auth/:path*'],
+  matcher: [
+    '/_next/static/css/:path*',
+  ],
 };
